@@ -13,6 +13,7 @@ import com.wenshuay.exception.SellException;
 import com.wenshuay.repository.OrderDetailRepository;
 import com.wenshuay.repository.OrderMasterRepository;
 import com.wenshuay.service.OrderService;
+import com.wenshuay.service.WebSocket;
 import com.wenshuay.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -39,6 +40,9 @@ import java.util.stream.Collectors;
 public class OrderServiceImpl implements OrderService {
     @Autowired
     ProductServiceImpl productService;
+
+    @Autowired
+    private WebSocket webSocket;
 
     @Autowired
     private OrderDetailRepository orderDetailRepository;
@@ -95,6 +99,10 @@ public class OrderServiceImpl implements OrderService {
                 new CartDTO(e.getProductId(), e.getProductQuantity())
         ).collect(Collectors.toList());
         productService.decreaseStock(cartDTOList);
+
+        //send websocket message
+        webSocket.sendMessage(orderDTO.getOrderId());
+
         return orderDTO;
     }
 
@@ -210,5 +218,13 @@ public class OrderServiceImpl implements OrderService {
             throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
         }
         return orderDTO;
+    }
+
+    @Override
+    public Page<OrderDTO> findList(Pageable pageable) {
+       Page<OrderMaster> orderMasterPage = orderMasterRepository.findAll(pageable);
+        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
+
+        return new PageImpl<OrderDTO>(orderDTOList, pageable, orderMasterPage.getTotalElements());
     }
 }

@@ -1,10 +1,12 @@
 package com.wenshuay.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.wenshuay.dataobject.OrderDetail;
 import com.wenshuay.enums.OrderStatusEnum;
 import com.wenshuay.enums.PayStatusEnum;
+import com.wenshuay.utils.EnumUtil;
 import com.wenshuay.utils.seriailizer.Data2LongSerializer;
 import lombok.Data;
 
@@ -54,4 +56,14 @@ public class OrderDTO {
 
 
     List<OrderDetail> orderDetailList;
+
+    @JsonIgnore
+    public OrderStatusEnum getOrderStatusEnum() {
+        return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
+    }
+
+    @JsonIgnore
+    public PayStatusEnum getPayStatusEnum() {
+        return EnumUtil.getByCode(payStatus, PayStatusEnum.class);
+    }
 }

@@ -6,7 +6,22 @@ spring:
     url: jdbc:mysql://192.168.0.105/sell?characterEncoding=utf-8&useSSL=false
   jpa:
     show-sql: true
+  redis:
+    host: 192.168.0.105
+    port: 6379
+
 # jackson:
 #   default-property-inclusion: non_null
 server:
   context-path: /sell
+
+wechat:
+  mpAppId: wx283de625e4ab6f32
+  mpAppSecret: e8a5d88411985520d097ab557bc5bc64
+
+
+
+projectUrl:
+  wechatMpAuthorize: https://fe7235c7.ngrok.io
+  wechatOpenAuthorize: https://fe7235c7.ngrok.io
+  sell: https://fe7235c7.ngrok.io
