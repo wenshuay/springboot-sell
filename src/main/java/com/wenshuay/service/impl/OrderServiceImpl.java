@@ -9,6 +9,7 @@ import com.wenshuay.dto.OrderDTO;
 import com.wenshuay.enums.OrderStatusEnum;
 import com.wenshuay.enums.PayStatusEnum;
 import com.wenshuay.enums.ResultEnum;
+import com.wenshuay.exception.ResponseBankException;
 import com.wenshuay.exception.SellException;
 import com.wenshuay.repository.OrderDetailRepository;
 import com.wenshuay.repository.OrderMasterRepository;
@@ -64,6 +65,7 @@ public class OrderServiceImpl implements OrderService {
             ProductInfo productInfo = productService.findOne(orderDetail.getProductId());
             if (productInfo == null) {
                 throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+                //throw new ResponseBankException();
             }
 
             //2. 计算订单总价

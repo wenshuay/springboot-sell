@@ -10,6 +10,7 @@ import com.wenshuay.service.ProductService;
 import com.wenshuay.utils.ResultVOUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +32,7 @@ public class BuyerProductController {
 
     @Autowired
     private CategoryService categoryService;
-
+    @Cacheable(cacheNames = "product", key = "123")
     @GetMapping("/list")
     public ResultVO list() {
 
